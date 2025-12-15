@@ -7,15 +7,24 @@ The application detects human body keypoints from video input and evaluates ergo
 
 ## Project Overview
 
-- Input: Video file (e.g. office CCTV footage)
-- Output:
+- **Input**
+  - Video file (`.mp4`), e.g. office CCTV footage
+
+- **Output**
   - Human bounding boxes
   - Body keypoints (COCO format)
   - Ergonomic risk classification:
     - Low Risk
     - Medium Risk
     - High Risk
-- Model: YOLOv8 Pose (pretrained, COCO)
+
+- **Model**
+  - YOLOv8 Pose (pretrained on COCO dataset)
+
+- **Approach**
+  - Pretrained pose estimation
+  - Rule-based angle analysis
+  - Simplified REBA (upper body focused)
 
 ---
 
@@ -66,11 +75,16 @@ git clone https://github.com/JasonnSW/deep-learning-pose-estimation.git
 cd deep-learning-pose-estimation
 ```
 ### 2. Check Python Version
+```bash
 python --version
+```
 
 ### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-
-### Running the Application
+### 4. Running the Application
+```bash
 py src/main.py
+```
