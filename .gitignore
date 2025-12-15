@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+.venv
+venv/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+datasets/coco/annotations/*.json
+
+datasets/coco/images/
+
+*.pt
+
+*.log
