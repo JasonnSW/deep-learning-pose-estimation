@@ -21,23 +21,30 @@ The application detects human body keypoints from video input and evaluates ergo
 
 ## Project Structure
 
+```text
 deep-learning-pose-estimation/
+│
 ├── src/
-│ ├── main.py
-│ ├── pose/
-│ │ └── ergonomics.py
-│ ├── ergonomics/
-│ │ ├── angles.py
-│ │ └── reba.py
-│ └── utils/
-│ └── draw.py
+│   ├── main.py
+│   ├── pose/
+│   │   └── ergonomics.py
+│   ├── ergonomics/
+│   │   ├── angles.py
+│   │   └── reba.py
+│   └── utils/
+│       ├── draw.py
+│       └── visualization.py
+│
+├── models/
+│   └── yolov8s-pose.pt
+│
 ├── data/
-│ └── videos/
-│ └── test.mp4
-├── yolov8s-pose.pt
+│   └── README.md
+│
 ├── requirements.txt
-└── README.md
-
+├── README.md
+└── .gitignore
+```
 
 ---
 
@@ -65,5 +72,5 @@ python --version
 pip install -r requirements.txt
 
 
-Running the Application
+### Running the Application
 py src/main.py
