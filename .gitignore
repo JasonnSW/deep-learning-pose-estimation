@@ -18,6 +18,8 @@ datasets/coco/annotations/*.json
 
 datasets/coco/images/
 
+results/runs/
+
 *.pt
 
 *.log
