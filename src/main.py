@@ -37,7 +37,6 @@ def main():
 
     logger.info("Scanning dataset for valid images...")
     valid_ids = dataset.get_valid_image_ids()
-    valid_ids = valid_ids[101:150] # delete later
     
     used_images = len(valid_ids)
     total_images = len(dataset.coco.getImgIds())
