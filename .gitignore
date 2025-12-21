@@ -16,7 +16,8 @@ Thumbs.db
 
 datasets/coco/annotations/*.json
 
-datasets/coco/images/
+datasets/coco/val2017/*
+!datasets/coco/val2017/.gitkeep
 
 results/runs/
 
