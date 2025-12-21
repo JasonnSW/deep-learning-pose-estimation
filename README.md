@@ -154,12 +154,13 @@ python --version
 ```
 
 ### 3. Create Virtual Environment (Python 3.11)
-```bash
 Windows
+```bash
 py -3.11 -m venv venv
 ```
-```bash
+
 Linux / macOS
+```bash
 python3.11 -m venv venv
 ```
 
@@ -183,3 +184,4 @@ pip install -r requirements.txt
 ```bash
 py src/main.py
 ```
+
