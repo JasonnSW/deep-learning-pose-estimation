@@ -28,10 +28,77 @@ The application detects human body keypoints from video input and evaluates ergo
 
 ---
 
+## Team Members
+| No | Name |
+|----|------|
+| 1 | Jason Surya Wijaya |
+| 2 | Vito Randy Gunawan |
+| 3 | Trivina Angellia Chandra |
+
+---
+
+## Visualization Results
+
+The system produces visual outputs to support ergonomic posture analysis:
+
+- **Human Bounding Boxes**  
+  Detected individuals are highlighted with bounding boxes.
+
+- **Pose Keypoints Visualization**  
+  Human body keypoints (COCO format) such as shoulders, elbows, hips, and knees are displayed.
+
+- **Skeleton Overlay**  
+  Keypoints are connected to form a skeleton structure for clearer posture interpretation.
+
+- **Ergonomic Risk Labels**
+  - Low Risk  
+  - Medium Risk  
+  - High Risk  
+
+- **Annotated Video Output**  
+  Final output videos display pose estimation results together with ergonomic risk classification.
+
+![Result 1](assets/pose_visualization_1.jpg)
+![Result 2](assets/pose_visualization_2.jpg)
+![Result 3](assets/pose_visualization_3.jpg)
+![Result 4](assets/pose_visualization_4.jpg)
+![Result 5](assets/pose_visualization_5.jpg)
+
+---
+
+## Dataset
+
+This project utilizes the **COCO 2017 Keypoints dataset** as a reference dataset for human pose estimation.
+
+### Dataset Sources
+- **COCO 2017 Validation Images**  
+  Link: http://images.cocodataset.org/zips/val2017.zip
+
+- **COCO 2017 Annotations (Train & Validation)**  
+  Link: http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+
+### Dataset Usage
+- The dataset is **not used for model training** in this project.
+- The YOLOv8 Pose model used is **pretrained on the COCO dataset**.
+- COCO dataset is referenced for:
+  - Keypoint format compatibility (COCO format)
+  - Visualization structure
+  - Pose estimation benchmarking
+
+- Input data for this system primarily consists of **custom video files (`.mp4`)**.
+
+---
+
 ## Project Structure
 
 ```text
 deep-learning-pose-estimation/
+├── assets/
+│   ├── pose_visualization_1.jpg
+│   ├── pose_visualization_2.jpg
+│   ├── pose_visualization_3.jpg
+│   ├── pose_visualization_4.jpg
+│   └── pose_visualization_5.jpg
 │
 ├── src/
 │   ├── main.py
@@ -47,8 +114,15 @@ deep-learning-pose-estimation/
 ├── models/
 │   └── yolov8s-pose.pt
 │
+├── datasets/
+│   └── coco/
+│       └── README.md
+│
 ├── data/
-│   └── README.md
+│   └── videos/
+│       ├── test.mp4
+│       ├── test2.mp4
+│       └── test3.mp4
 │
 ├── requirements.txt
 ├── README.md
