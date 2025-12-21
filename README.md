@@ -35,6 +35,8 @@ The application detects human body keypoints from video input and evaluates ergo
 | 2 | Vito Randy Gunawan |
 | 3 | Trivina Angellia Chandra |
 
+---
+
 ## Visualization Results
 
 The system produces visual outputs to support ergonomic posture analysis:
@@ -56,12 +58,13 @@ The system produces visual outputs to support ergonomic posture analysis:
 - **Annotated Video Output**  
   Final output videos display pose estimation results together with ergonomic risk classification.
 
-```md
 ![Result 1](assets/pose_visualization_1.jpg)
 ![Result 2](assets/pose_visualization_2.jpg)
 ![Result 3](assets/pose_visualization_3.jpg)
 ![Result 4](assets/pose_visualization_4.jpg)
 ![Result 5](assets/pose_visualization_5.jpg)
+
+---
 
 ## Dataset
 
@@ -83,6 +86,8 @@ This project utilizes the **COCO 2017 Keypoints dataset** as a reference dataset
   - Pose estimation benchmarking
 
 - Input data for this system primarily consists of **custom video files (`.mp4`)**.
+
+---
 
 ## Project Structure
 
