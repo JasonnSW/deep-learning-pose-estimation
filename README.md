@@ -29,11 +29,11 @@ The application detects human body keypoints from video input and evaluates ergo
 ---
 
 ## Team Members
-| No | Name |
-|----|------|
-| 1 | Jason Surya Wijaya |
-| 2 | Vito Randy Gunawan |
-| 3 | Trivina Angellia Chandra |
+| No | Name | NIM |
+|----|------|------|
+| 1 | Jason Surya Wijaya | 235150207111055 |
+| 2 | Vito Randy Gunawan | 235150200111060 |
+| 3 | Trivina Angellia Chandra | 245150201111006 |
 
 ---
 
