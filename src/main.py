@@ -1,51 +1,123 @@
-import cv2
+import os
+import json
+from datetime import datetime
 from ultralytics import YOLO
 
-from ergonomics.reba import reba_lite_score, classify_reba
-from pose.ergonomics import is_valid_pose
-from utils.draw import draw_box, draw_keypoints
+from data.coco_loader import CocoPoseDataset
+from eval.evaluate import evaluate
+from utils.logging import setup_logger
+from viz.plots import generate_plots
 
-VIDEO_PATH = "data/videos/test.mp4"
 
 def main():
+    # ------------------------------------------------------------------
+    # Run setup
+    # ------------------------------------------------------------------
+    run_id = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    base_dir = f"results/runs/{run_id}"
+    log_dir = f"{base_dir}/logs"
+    metrics_dir = f"{base_dir}/metrics"
+    viz_dir = f"{base_dir}/visualizations"
+
+    for d in [log_dir, metrics_dir, viz_dir]:
+        os.makedirs(d, exist_ok=True)
+
+    logger = setup_logger(f"{log_dir}/run.log")
+
+    logger.info("========== REBA Evaluation Started ==========")
+
+    # ------------------------------------------------------------------
+    # Dataset
+    # ------------------------------------------------------------------
+    dataset = CocoPoseDataset(
+        ann_path="datasets/coco/annotations/person_keypoints_val2017.json",
+        image_dir="datasets/coco/val2017"
+    )
+
+    logger.info("Scanning dataset for valid images...")
+    valid_ids = dataset.get_valid_image_ids()
+    
+    used_images = len(valid_ids)
+    total_images = len(dataset.coco.getImgIds())
+
+    logger.info(f"Total COCO images: {total_images}")
+    logger.info(f"Images with persons used: {used_images}")
+    print(f"Images to be evaluated: {used_images}")
+
+    # ------------------------------------------------------------------
+    # Model
+    # ------------------------------------------------------------------
     model = YOLO("yolov8s-pose.pt")
-    cap = cv2.VideoCapture(VIDEO_PATH)
 
-    cv2.namedWindow("Pose Ergonomics Application", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("Pose Ergonomics Application", 1280, 720)
+    # ------------------------------------------------------------------
+    # Evaluation
+    # ------------------------------------------------------------------
+    samples = dataset.get_samples(valid_ids)
+    results = evaluate(model, samples)
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+    persons_evaluated = results["persons"]
+    mae = results["mae"]
+    risk_accuracy = results["risk_accuracy"]
+    risk_diff = results["risk_diff"]
 
-        results = model(frame, conf=0.2, verbose=False)
+    print(f"Persons evaluated: {persons_evaluated}")
+    print(f"Mean Absolute Error (REBA): {mae}")
 
-        for r in results:
-            if r.boxes is None or r.keypoints is None:
-                continue
+    print("\nRisk level mismatches:")
+    for k, v in risk_diff.items():
+        print(f"{k} → {v}")
 
-            boxes = r.boxes.xyxy.cpu().numpy()
-            keypoints = r.keypoints.xy.cpu().numpy()
+    print(f"\nRisk-level accuracy: {risk_accuracy}")
 
-            for box, kp in zip(boxes, keypoints):
-                points = kp.tolist()
+    # ------------------------------------------------------------------
+    # Save metrics
+    # ------------------------------------------------------------------
+    with open(f"{metrics_dir}/summary.json", "w") as f:
+        json.dump(
+            {
+                "total_images": total_images,
+                "images_used": used_images,
+                "persons_evaluated": persons_evaluated,
+                "mae": mae,
+                "risk_accuracy": risk_accuracy,
+            },
+            f,
+            indent=2
+        )
 
-                if not is_valid_pose(points):
-                    continue
+    with open(f"{metrics_dir}/risk_confusion.json", "w") as f:
+        json.dump(
+            {str(k): v for k, v in risk_diff.items()},
+            f,
+            indent=2
+        )
 
-                score = reba_lite_score(points)
-                label = classify_reba(score)
+    # ------------------------------------------------------------------
+    # Visualizations
+    # ------------------------------------------------------------------
+    print("\n[INFO] Generating plots...")
+    generate_plots(results, viz_dir)
 
-                draw_box(frame, box, label)
-                draw_keypoints(frame, points)
+    # ------------------------------------------------------------------
+    # Metadata 
+    # ------------------------------------------------------------------
+    with open(f"{base_dir}/metadata.json", "w") as f:
+        json.dump(
+            {
+                "run_id": run_id,
+                "model": "yolov8s-pose.pt",
+                "confidence_threshold": 0.3,
+                "dataset": "COCO val2017",
+            },
+            f,
+            indent=2
+        )
 
-        cv2.imshow("Pose Ergonomics Application", frame)
-        if cv2.waitKey(1) & 0xFF == 27:
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
+    logger.info("========== Evaluation Completed ==========")
+    logger.info(f"Persons evaluated: {persons_evaluated}")
+    logger.info(f"MAE: {mae}")
+    logger.info(f"Risk accuracy: {risk_accuracy}")
 
 
 if __name__ == "__main__":
