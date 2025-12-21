@@ -133,7 +133,7 @@ deep-learning-pose-estimation/
 
 ## Requirements
 
-- **Python 3.13.x (MANDATORY)**
+- **Python 3.11.x (MANDATORY)**
 - pip
 - Windows or Linux OS
 - Video input (`.mp4`)
@@ -153,12 +153,33 @@ cd deep-learning-pose-estimation
 python --version
 ```
 
-### 3. Install Dependencies
+### 3. Create Virtual Environment (Python 3.11)
+```bash
+Windows
+py -3.11 -m venv venv
+```
+```bash
+Linux / macOS
+python3.11 -m venv venv
+```
+
+### 4. Activate Virtual Environment
+Windows
+```bash
+venv\Scripts\activate
+```
+
+Linux / macOS
+```bash
+source venv/bin/activate
+```
+
+### 5. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Running the Application
+### 6. Running the Application
 ```bash
 py src/main.py
 ```
